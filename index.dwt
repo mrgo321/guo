@@ -1,0 +1,1008 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+<link href="themes/zl_hongjiu/css/css.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="themes/zl_hongjiu/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="themes/zl_hongjiu/js/popwin.js"></script><!--控制右侧返回顶部特效-->
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,index.js'}
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+
+<!--导航部分 开始-->
+<div class="nav_100">
+ <div class="nav_center b_center">
+  <div class="nav_left fl">
+   <ul>选酒中心</ul>
+  </div>
+  <!--nav_left end-->
+  <div class="nav_right fr">
+   <ul>
+    <li><a href="../index.php">{$lang.home}</a></li>
+    <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav name=nav} -->
+    <li {if $smarty.foreach.nav.last}style="background:none;"{/if}><a href="{$nav.url}" {if $nav.opennew eq 1}target="_blank" {/if}>{$nav.name}</a></li>
+   <!-- {/foreach} -->
+   </ul>
+  </div>
+  <!--nav_right end-->
+ </div>
+ <!--nav_center end-->
+</div>
+<!--导航部分 结束-->
+<!--banner 开始-->
+<div id="flashBg">
+  <div id="flashLine">
+  <div id="flash">
+    <!--{foreach from=$flash item=item key=key}-->
+        {if $key==0}
+          <a href="{$item.url}" id="flash{$key}" style="display: block; " name="#c5470a"><img src="{$item.src}" width="980" height="400" title="{$item.text}" alt="{$item.text}"></a>
+        {else}
+          <a href="{$item.url}" id="flash{$key}" name="#c5470a" style="display: none; "><img src="{$item.src}" width="980" height="400"></a>
+        {/if}
+    <!--{/foreach}-->
+
+    <div class="flash_bar">
+    <!--{foreach from=$flash item=item key=key}-->
+    {if $key==0}
+    <div class="dq" id="f{$key}" onClick="changeflash({$key})"></div>
+    {else}
+    <div class="no" id="f{$key}" onClick="changeflash({$key})"></div>
+    {/if}
+    <!--{/foreach}-->
+
+    </div>
+<!--产品列表 开始-->
+<div class="pro_cate" style="height:0px">
+ <div class="pro_cate_list fl">
+
+  <!--{foreach from=$categoriesall item=cat}-->
+  <div class="pro_cate_list_item">
+   <ul>
+    <li>
+     <h1><a href="{$cat.url}">{$cat.name|escape:html}</a></h1><h2>
+   <!--{foreach from=$cat.cat_id item=child}-->
+   <a href="{$child.url}">{$child.name|escape:html}</a>
+   <!--{/foreach}-->
+     </h2>
+    </li>
+   </ul>
+  </div>
+  <!--{/foreach}--> 
+
+  <!--pro_cate_list_item 结束--> 
+
+ </div>
+  <!--pro_cate_list 结束--> 
+ <div class="pro_cate_right fr">
+  <div style="background:url(data/afficheimg/{$ecs_all_ads.1.0.ad_code}) no-repeat; width:240px; height:125px;"><a href="{$ecs_all_ads.1.0.ad_link}" style="display:block;width:240px; height:125px;"></a></div>
+  <div style="background:url(data/afficheimg/{$ecs_all_ads.2.0.ad_code}) no-repeat; width:240px; height:125px;"><a href="{$ecs_all_ads.2.0.ad_link}" style="display:block;width:240px; height:125px;"></a></div>
+  <div class="pro_cate_r_news" style="display:none;">
+   <h1>红酒资讯</h1>
+   <ul>
+<!--{foreach from=$new_articles item=article}-->
+  <li>
+  < <a href="{$article.url}" title="{$article.title|escape:html}">{$article.short_title|truncate:30:"...":true}</a>
+  </li>
+<!--{/foreach}-->
+   </ul>
+  </div>
+ </div>
+ <!--pro_cate_list 结束--> 
+</div>
+<!--产品列表 结束--> 
+   </div>
+
+    </div>
+      
+</div>
+
+<script type="text/javascript">
+var currentindex=0;
+jQuery("#flashBg").css("background-color",jQuery("#flash0").attr("name"));
+function changeflash(i){  
+  currentindex=i;
+  for(j=0;j<{$flash_count};j++){
+    if(j==i){
+      jQuery("#flash"+j).fadeIn("normal");
+      jQuery("#flash"+j).css("display","block");
+      jQuery("#f"+j).removeClass();
+      jQuery("#f"+j).addClass("dq");
+      jQuery("#flashBg").css("background-color",jQuery("#flash"+j).attr("name"));
+    }else{
+      jQuery("#flash"+j).css("display","none");
+      jQuery("#f"+j).removeClass();
+      jQuery("#f"+j).addClass("no");
+    }
+  }
+}
+function startAm(){
+  timerID = setInterval("timer_tick()",3000);
+}
+function stopAm(){
+  clearInterval(timerID);
+}
+function timer_tick(){
+  currentindex=(currentindex+1)>={$flash_count}?0:currentindex+1;
+  changeflash(currentindex);
+}
+jQuery(document).ready(function(){
+  jQuery(".flash_bar div").mouseover(function(){
+    stopAm();
+  }).mouseout(function(){
+    startAm();
+  });
+  startAm();
+});
+</script>
+<!--banner 结束-->
+<div class="blank10"></div>
+
+
+
+
+
+<!--精品推荐 开始-->
+<div class="abk_content_item b_center">
+ <div class="abk_c_item_left fl">
+  <div class="abk_c_i_l_top">
+   <ul>精品推荐</ul>
+  </div>
+<div class="guanggao_one">
+ <div id="outer">
+    <ul id="inner">
+    <!--{foreach from=$ecs_all_ads.3 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><img src="data/afficheimg/{$ad.ad_code}" width="210" height="480"></a></li>
+    <!--{/foreach}-->
+    </ul>
+  </div>
+     <script type="text/javascript">
+    var outer=document.getElementById("outer");
+    var oInner=document.getElementById("inner");
+    var oLis=oInner.getElementsByTagName("li");
+    var oleft=document.getElementById("left");
+    var oright=document.getElementById("right");
+    var step=0;
+    var timer=null;
+    function buttur(ele,obj){
+      window.clearTimeout(ele.timer);
+      var end=null;
+      for(direc in obj){
+        var direc1=direc.toLowerCase();
+        var strOffset="offset"+direc1.substr(0,1).toUpperCase()+direc1.substring(1).toLowerCase();
+        var target=obj[direc];
+        var nSpeed=(target-ele[strOffset])/10;
+        nSpeed=nSpeed>=0?Math.ceil(nSpeed):Math.floor(nSpeed);
+        ele.style[direc1]=ele[strOffset]+nSpeed+"px";
+        end+=nSpeed;
+      }
+      if(end)
+        if(typeof fnCallback=="function"){
+          fnCallback.call(ele);
+        }else{
+            ele.timer=window.setTimeout(function(){buttur(ele,obj)},30);
+        }
+    }
+    var divs=document.createElement("div");
+    divs.setAttribute("id","nav");
+    for(var i=0; i<oLis.length;i++){
+        var oa=document.createElement("em");
+        oa.innerHTML=i+1;
+        divs.appendChild(oa);
+    }
+    outer.appendChild(divs);
+    var btn=document.getElementById("nav").getElementsByTagName("em");
+    for(var i=0; i<btn.length; i++){
+        btn[i].indx=i;
+        btn[0].className="ehover";
+        btn[i].onclick=function(){
+            //window.clearTimeout(timer);
+            for(var i=0; i<btn.length; i++){
+                btn[i].className="";
+                btn[this.indx].className="ehover";
+            }
+            buttur(oInner,{left:-oLis[0].offsetWidth*this.indx}); 
+        }    
+    }
+    function autoMove(){          
+      if(step<btn.length){
+             for(var i=0; i<btn.length; i++){
+                btn[i].className="";
+                btn[step].className="ehover";
+                buttur(oInner,{left:step*-210});
+            }           
+       }else{ 
+                step=btn.length-5;        
+         }
+      timer=window.setTimeout(autoMove,3000);
+    step++;
+    }
+    autoMove(); 
+    oleft.onclick=function(){
+      window.clearTimeout(timer);
+      step++;
+      if(step<btn.length){
+             for(var i=0; i<btn.length; i++){
+                btn[i].className="";
+                btn[step].className="ehover";
+                buttur(oInner,{left:step*-210});
+            }           
+         }else{ 
+                step=btn.length-5;        
+         }
+     }
+    oright.onclick=function(){
+      window.clearTimeout(timer);
+      step--;
+      if(step<0){
+             step=btn.length;
+         }else{ 
+            for(var i=0; i<btn.length; i++){
+                btn[i].className="";
+                btn[step].className="ehover";
+                buttur(oInner,{left:step*-210}); 
+            }
+         }
+    }
+     
+   oInner.onmouseover=function(){window.clearTimeout(timer);}
+   oInner.onmouseout=function(){timer=window.setTimeout(autoMove,3000);}
+   oleft.onmouseover=function(){window.clearTimeout(timer);}
+   oleft.onmouseout=function(){timer=window.setTimeout(autoMove,3000);}
+   oright.onmouseover=function(){window.clearTimeout(timer);}
+   oright.onmouseout=function(){timer=window.setTimeout(autoMove,3000);} 
+  </script>   
+</div>  
+  
+ </div>
+ <!--abk_c_item_left 结束-->
+ <div class="abk_c_item_right fl">
+  <div class="abk_c_item_r_top">
+   <div class="abk_c_i_r_t_l fl">
+    <!--{foreach from=$ecs_all_ads.4 item=ad key=i}-->
+    <a href="{$ad.ad_link}">{$ad.ad_name}</a>
+    <!--{/foreach}-->
+   </div><!--此处的红酒品牌不超过8个，程序员注意，这里的品牌是链接到category里面的一个id分类-->
+   <div class="abk_c_i_r_t_more fr">
+    <ul><a href="category.php?stype=is_best">查看更多 >></a></ul><!--这里的category.php是链接到精品推荐所有的产品-->
+   </div>
+  </div>
+  <!--abk_c_item_r_top 结束-->
+  <div class="abk_c_item_pro_list">
+   <ul>
+
+    <!--{foreach from=$best_goods item=goods}-->
+    <li>
+    <table width="231" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="170" valign="bottom">
+      <a href="goods.php?id={$goods.goods_id}"><div style="position:relative;"><img src="{$goods.goods_thumb}" width="160" height="160">
+      {if $goods.is_bk}<img src="images/p_bk.png" width="55" height="55" style="position:absolute; top:20px; right:10px;">{/if}
+     </div></a></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="goods.php?id={$goods.goods_id}" style="width:230px; line-height:30px; white-space: nowrap; text-overflow:ellipsis; overflow:hidden; display:block;">{$goods.goods_name}</a></td>
+  </tr>
+  <tr>
+    <td valign="bottom" height="25" align="left"><span>￥{$goods.shop_price}</span> &nbsp;<b>￥{$goods.market_price}</b></td>
+  </tr>
+</table>
+    </li>
+    <!--{/foreach}-->
+
+
+    
+   </ul>
+  </div>
+  <!--abk_c_item_pro_list 结束-->
+ </div>
+  <!--abk_c_item_right 结束-->
+</div>
+<!--精品推荐 结束-->
+<div class="blank10"></div>
+
+
+
+
+<!--广告位01 开始-->
+<div style="background:url(data/afficheimg/{$ecs_all_ads.13.0.ad_code}) no-repeat center center; width:100%; height:300px;" onclick="location.href='{$ecs_all_ads.13.0.ad_link}'"></div>
+<!--广告位01 结束-->
+<div class="blank10"></div>
+<!--新品上市 开始-->
+<div class="abk_content_item b_center">
+ <div class="abk_c_item_left fl">
+  <div class="abk_c_i_l_top">
+   <ul>新品上市</ul>
+  </div>
+<div class="guanggao_two">
+ <div id="outer_two">
+    <ul id="inner_two">
+    <!--{foreach from=$ecs_all_ads.5 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><img src="data/afficheimg/{$ad.ad_code}" width="210" height="480"></a></li>
+    <!--{/foreach}-->
+    </ul>
+  </div>
+     <script type="text/javascript">
+    var outer_two=document.getElementById("outer_two");
+    var oInner_two=document.getElementById("inner_two");
+    var oLis_two=oInner_two.getElementsByTagName("li");
+    var oleft_two=document.getElementById("left_two");
+    var oright_two=document.getElementById("right_two");
+    var step_two=0;
+    var timer_two=null;
+    function buttur_two(ele,obj){
+      window.clearTimeout(ele.timer);
+      var end=null;
+      for(direc in obj){
+        var direc1=direc.toLowerCase();
+        var strOffset="offset"+direc1.substr(0,1).toUpperCase()+direc1.substring
+
+(1).toLowerCase();
+        var target=obj[direc];
+        var nSpeed=(target-ele[strOffset])/10;
+        nSpeed=nSpeed>=0?Math.ceil(nSpeed):Math.floor(nSpeed);
+        ele.style[direc1]=ele[strOffset]+nSpeed+"px";
+        end+=nSpeed;
+      }
+      if(end)
+        if(typeof fnCallback=="function"){
+          fnCallback.call(ele);
+        }else{
+            ele.timer=window.setTimeout(function(){buttur_two(ele,obj)},30);
+        }
+    }
+    var divs_two=document.createElement("div");
+    divs_two.setAttribute("id","nav_two");
+    for(var i=0; i<oLis_two.length;i++){
+        var oa_two=document.createElement("em_two");
+        oa_two.innerHTML=i+1;
+        divs_two.appendChild(oa_two);
+    }
+    outer_two.appendChild(divs_two);
+    var btn_two=document.getElementById("nav_two").getElementsByTagName("em_two");
+    for(var i=0; i<btn_two.length; i++){
+        btn_two[i].indx=i;
+        btn_two[0].className="ehover_two";
+        btn_two[i].onclick=function(){
+            //window.clearTimeout(timer);
+            for(var i=0; i<btn_two.length; i++){
+                btn_two[i].className="";
+                btn_two[this.indx].className="ehover_two";
+            }
+            buttur_two(oInner_two,{left:-oLis_two[0].offsetWidth*this.indx}); 
+        }    
+    }
+    function autoMove_two(){          
+      if(step_two<btn_two.length){
+             for(var i=0; i<btn_two.length; i++){
+                btn_two[i].className="";
+                btn_two[step_two].className="ehover_two";
+                buttur_two(oInner_two,{left:step_two*-210});
+            }           
+       }else{ 
+                step_two=btn_two.length-5;        
+         }
+      timer_two=window.setTimeout(autoMove_two,4000);
+    step_two++;
+    }
+    autoMove_two(); 
+    oleft_two.onclick=function(){
+      window.clearTimeout(timer_two);
+      step_two++;
+      if(step_two<btn_two.length){
+             for(var i=0; i<btn_two.length; i++){
+                btn_two[i].className="";
+                btn_two[step_two].className="ehover_two";
+                buttur_two(oInner_two,{left:step_two*-210});
+            }           
+         }else{ 
+                step_two=btn_two.length-5;        
+         }
+     }
+    oright_two.onclick=function(){
+      window.clearTimeout(timer_two);
+      step_two--;
+      if(step_two<0){
+             step_two=btn_two.length;
+         }else{ 
+            for(var i=0; i<btn_two.length; i++){
+                btn_two[i].className="";
+                btn_two[step_two].className="ehover_two";
+                buttur_two(oInner_two,{left:step_two*-210}); 
+            }
+         }
+    }
+     
+   oInner_two.onmouseover=function(){window.clearTimeout(timer_two);}
+   oInner_two.onmouseout=function(){timer_two=window.setTimeout(autoMove_two,4000);}
+   oleft_two.onmouseover=function(){window.clearTimeout(timer_two);}
+   oleft_two.onmouseout=function(){timer_two=window.setTimeout(autoMove_two,4000);}
+   oright_two.onmouseover=function(){window.clearTimeout(timer_two);}
+   oright_two.onmouseout=function(){timer_two=window.setTimeout(autoMove_two,4000);} 
+  </script>   
+</div>  
+  
+ </div>
+ <!--abk_c_item_left 结束-->
+ <div class="abk_c_item_right fl">
+  <div class="abk_c_item_r_top">
+   <div class="abk_c_i_r_t_l fl">
+    <!--{foreach from=$ecs_all_ads.6 item=ad key=i}-->
+    <a href="{$ad.ad_link}">{$ad.ad_name}</a>
+    <!--{/foreach}-->
+   </div><!--此处的红酒品牌不超过8个，程序员注意，同上-->
+   <div class="abk_c_i_r_t_more fr">
+    <ul><a href="category.php?stype=is_new">查看更多 >></a></ul>
+   </div>
+  </div>
+  <!--abk_c_item_r_top 结束-->
+  <div class="abk_c_item_pro_list">
+   <ul>
+
+    <!--{foreach from=$new_goods item=goods}-->
+    <li>
+    <table width="231" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="170" valign="bottom">
+      <a href="goods.php?id={$goods.goods_id}"><div style="position:relative;"><img src="{$goods.goods_thumb}" width="160" height="160">
+      {if $goods.is_bk}<img src="images/p_bk.png" width="55" height="55" style="position:absolute; top:20px; right:10px;">{/if}
+     </div></a></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="goods.php?id={$goods.goods_id}" style="width:230px; line-height:30px; white-space: nowrap; text-overflow:ellipsis; overflow:hidden; display:block;">{$goods.goods_name}</a></td>
+  </tr>
+  <tr>
+    <td valign="bottom" height="25" align="left"><span>￥{$goods.shop_price}</span> &nbsp;<b>￥{$goods.market_price}</b></td>
+  </tr>
+</table>
+    </li>
+    <!--{/foreach}-->
+    
+   </ul>
+  </div>
+  <!--abk_c_item_pro_list 结束-->
+ </div>
+  <!--abk_c_item_right 结束-->
+</div>
+<!--新品上市 结束-->
+<div class="blank10"></div>
+<!--广告位02 开始-->
+<div style="background:url(data/afficheimg/{$ecs_all_ads.14.0.ad_code}) no-repeat center center; width:100%; height:300px;" onclick="location.href='{$ecs_all_ads.14.0.ad_link}'"></div>
+<!--广告位02 结束-->
+<div class="blank10"></div>
+<!--国产精选 开始-->
+<div class="abk_content_item b_center">
+ <div class="abk_c_item_left fl">
+  <div class="abk_c_i_l_top">
+   <ul>国产精选</ul>
+  </div>
+<div class="guanggao_three">
+ <div id="outer_three">
+    <ul id="inner_three">
+    <!--{foreach from=$ecs_all_ads.7 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><img src="data/afficheimg/{$ad.ad_code}" width="210" height="480"></a></li>
+    <!--{/foreach}-->
+    </ul>
+  </div>
+     <script type="text/javascript">
+    var outer_three=document.getElementById("outer_three");
+    var oInner_three=document.getElementById("inner_three");
+    var oLis_three=oInner_three.getElementsByTagName("li");
+    var oleft_three=document.getElementById("left_three");
+    var oright_three=document.getElementById("right_three");
+    var step_three=0;
+    var timer_three=null;
+    function buttur_three(ele,obj){
+      window.clearTimeout(ele.timer);
+      var end=null;
+      for(direc in obj){
+        var direc1=direc.toLowerCase();
+        var strOffset="offset"+direc1.substr(0,1).toUpperCase()+direc1.substring
+
+(1).toLowerCase();
+        var target=obj[direc];
+        var nSpeed=(target-ele[strOffset])/10;
+        nSpeed=nSpeed>=0?Math.ceil(nSpeed):Math.floor(nSpeed);
+        ele.style[direc1]=ele[strOffset]+nSpeed+"px";
+        end+=nSpeed;
+      }
+      if(end)
+        if(typeof fnCallback=="function"){
+          fnCallback.call(ele);
+        }else{
+            ele.timer=window.setTimeout(function(){buttur_three(ele,obj)},30);
+        }
+    }
+    var divs_three=document.createElement("div");
+    divs_three.setAttribute("id","nav_three");
+    for(var i=0; i<oLis_three.length;i++){
+        var oa_three=document.createElement("em_three");
+        oa_three.innerHTML=i+1;
+        divs_three.appendChild(oa_three);
+    }
+    outer_three.appendChild(divs_three);
+    var btn_three=document.getElementById("nav_three").getElementsByTagName("em_three");
+    for(var i=0; i<btn_three.length; i++){
+        btn_three[i].indx=i;
+        btn_three[0].className="ehover_three";
+        btn_three[i].onclick=function(){
+            //window.clearTimeout(timer);
+            for(var i=0; i<btn_three.length; i++){
+                btn_three[i].className="";
+                btn_three[this.indx].className="ehover_three";
+            }
+            buttur_three(oInner_three,{left:-oLis_three[0].offsetWidth*this.indx}); 
+        }    
+    }
+    function autoMove_three(){          
+      if(step_three<btn_three.length){
+             for(var i=0; i<btn_three.length; i++){
+                btn_three[i].className="";
+                btn_three[step_three].className="ehover_three";
+                buttur_three(oInner_three,{left:step_three*-210});
+            }           
+       }else{ 
+                step_three=btn_three.length-5;        
+         }
+      timer_three=window.setTimeout(autoMove_three,4000);
+    step_three++;
+    }
+    autoMove_three(); 
+    oleft_three.onclick=function(){
+      window.clearTimeout(timer_three);
+      step_three++;
+      if(step_three<btn_three.length){
+             for(var i=0; i<btn_three.length; i++){
+                btn_three[i].className="";
+                btn_three[step_three].className="ehover_three";
+                buttur_three(oInner_three,{left:step_three*-210});
+            }           
+         }else{ 
+                step_three=btn_three.length-5;        
+         }
+     }
+    oright_three.onclick=function(){
+      window.clearTimeout(timer_three);
+      step_three--;
+      if(step_three<0){
+             step_three=btn_three.length;
+         }else{ 
+            for(var i=0; i<btn_three.length; i++){
+                btn_three[i].className="";
+                btn_three[step_three].className="ehover_three";
+                buttur_three(oInner_three,{left:step_three*-210}); 
+            }
+         }
+    }
+     
+   oInner_three.onmouseover=function(){window.clearTimeout(timer_three);}
+   oInner_three.onmouseout=function(){timer_three=window.setTimeout(autoMove_three,4000);}
+   oleft_three.onmouseover=function(){window.clearTimeout(timer_three);}
+   oleft_three.onmouseout=function(){timer_three=window.setTimeout(autoMove_three,4000);}
+   oright_three.onmouseover=function(){window.clearTimeout(timer_three);}
+   oright_three.onmouseout=function(){timer_three=window.setTimeout(autoMove_three,4000);} 
+  </script>   
+</div>  
+  
+ </div>
+ <!--abk_c_item_left 结束-->
+ <div class="abk_c_item_right fl">
+  <div class="abk_c_item_r_top">
+   <div class="abk_c_i_r_t_l fl">
+    <!--{foreach from=$ecs_all_ads.8 item=ad key=i}-->
+    <a href="{$ad.ad_link}">{$ad.ad_name}</a>
+    <!--{/foreach}-->
+   </div><!--此处的红酒品牌不超过8个，程序员注意，同上-->
+   <div class="abk_c_i_r_t_more fr">
+    <ul><a href="category.php?stype=is_gcjx">查看更多 >></a></ul>
+   </div>
+  </div>
+  <!--abk_c_item_r_top 结束-->
+  <div class="abk_c_item_pro_list">
+   <ul>
+
+    <!--{foreach from=$gcjx_goods item=goods}-->
+    <li>
+    <table width="231" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="170" valign="bottom">
+      <a href="goods.php?id={$goods.goods_id}"><div style="position:relative;"><img src="{$goods.goods_thumb}" width="160" height="160">
+      {if $goods.is_bk}<img src="images/p_bk.png" width="55" height="55" style="position:absolute; top:20px; right:10px;">{/if}
+     </div></a></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="goods.php?id={$goods.goods_id}" style="width:230px; line-height:30px; white-space: nowrap; text-overflow:ellipsis; overflow:hidden; display:block;">{$goods.goods_name}</a></td>
+  </tr>
+  <tr>
+    <td valign="bottom" height="25" align="left"><span>￥{$goods.shop_price}</span> &nbsp;<b>￥{$goods.market_price}</b></td>
+  </tr>
+</table>
+    </li>
+    <!--{/foreach}-->
+    
+   </ul>
+  </div>
+  <!--abk_c_item_pro_list 结束-->
+ </div>
+  <!--abk_c_item_right 结束-->
+</div>
+<!--国产精选 结束-->
+<div class="blank10"></div>
+<!--广告位03 开始-->
+<div style="background:url(data/afficheimg/{$ecs_all_ads.15.0.ad_code}) no-repeat center center; width:100%; height:300px;" onclick="location.href='{$ecs_all_ads.15.0.ad_link}'"></div>
+<!--广告位03 结束-->
+<div class="blank10"></div>
+<!--热销产品 开始-->
+<div class="abk_content_item b_center">
+ <div class="abk_c_item_left fl">
+  <div class="abk_c_i_l_top">
+   <ul>热销产品</ul>
+  </div>
+<div class="guanggao_four">
+ <div id="outer_four">
+    <ul id="inner_four">
+    <!--{foreach from=$ecs_all_ads.9 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><img src="data/afficheimg/{$ad.ad_code}" width="210" height="480"></a></li>
+    <!--{/foreach}-->
+    </ul>
+  </div>
+     <script type="text/javascript">
+    var outer_four=document.getElementById("outer_four");
+    var oInner_four=document.getElementById("inner_four");
+    var oLis_four=oInner_four.getElementsByTagName("li");
+    var oleft_four=document.getElementById("left_four");
+    var oright_four=document.getElementById("right_four");
+    var step_four=0;
+    var timer_four=null;
+    function buttur_four(ele,obj){
+      window.clearTimeout(ele.timer);
+      var end=null;
+      for(direc in obj){
+        var direc1=direc.toLowerCase();
+        var strOffset="offset"+direc1.substr(0,1).toUpperCase()+direc1.substring
+
+(1).toLowerCase();
+        var target=obj[direc];
+        var nSpeed=(target-ele[strOffset])/10;
+        nSpeed=nSpeed>=0?Math.ceil(nSpeed):Math.floor(nSpeed);
+        ele.style[direc1]=ele[strOffset]+nSpeed+"px";
+        end+=nSpeed;
+      }
+      if(end)
+        if(typeof fnCallback=="function"){
+          fnCallback.call(ele);
+        }else{
+            ele.timer=window.setTimeout(function(){buttur_four(ele,obj)},30);
+        }
+    }
+    var divs_four=document.createElement("div");
+    divs_four.setAttribute("id","nav_four");
+    for(var i=0; i<oLis_four.length;i++){
+        var oa_four=document.createElement("em_four");
+        oa_four.innerHTML=i+1;
+        divs_four.appendChild(oa_four);
+    }
+    outer_four.appendChild(divs_four);
+    var btn_four=document.getElementById("nav_four").getElementsByTagName("em_four");
+    for(var i=0; i<btn_four.length; i++){
+        btn_four[i].indx=i;
+        btn_four[0].className="ehover_four";
+        btn_four[i].onclick=function(){
+            //window.clearTimeout(timer);
+            for(var i=0; i<btn_four.length; i++){
+                btn_four[i].className="";
+                btn_four[this.indx].className="ehover_four";
+            }
+            buttur_four(oInner_four,{left:-oLis_four[0].offsetWidth*this.indx}); 
+        }    
+    }
+    function autoMove_four(){           
+      if(step_four<btn_four.length){
+             for(var i=0; i<btn_four.length; i++){
+                btn_four[i].className="";
+                btn_four[step_four].className="ehover_four";
+                buttur_four(oInner_four,{left:step_four*-210});
+            }           
+       }else{ 
+                step_four=btn_four.length-5;        
+         }
+      timer_four=window.setTimeout(autoMove_four,4000);
+    step_four++;
+    }
+    autoMove_four(); 
+    oleft_four.onclick=function(){
+      window.clearTimeout(timer_four);
+      step_four++;
+      if(step_four<btn_four.length){
+             for(var i=0; i<btn_four.length; i++){
+                btn_four[i].className="";
+                btn_four[step_four].className="ehover_four";
+                buttur_four(oInner_four,{left:step_four*-210});
+            }           
+         }else{ 
+                step_four=btn_four.length-5;        
+         }
+     }
+    oright_four.onclick=function(){
+      window.clearTimeout(timer_four);
+      step_four--;
+      if(step_four<0){
+             step_four=btn_four.length;
+         }else{ 
+            for(var i=0; i<btn_four.length; i++){
+                btn_four[i].className="";
+                btn_four[step_four].className="ehover_four";
+                buttur_four(oInner_four,{left:step_four*-210}); 
+            }
+         }
+    }
+     
+   oInner_four.onmouseover=function(){window.clearTimeout(timer_four);}
+
+   oInner_four.onmouseout=function(){timer_four=window.setTimeout(autoMove_four,4000);}
+   oleft_four.onmouseover=function(){window.clearTimeout(timer_four);}
+   oleft_four.onmouseout=function(){timer_four=window.setTimeout(autoMove_four,4000);}
+   oright_four.onmouseover=function(){window.clearTimeout(timer_four);}
+   oright_four.onmouseout=function(){timer_four=window.setTimeout(autoMove_four,4000);} 
+  </script>   
+</div>  
+  
+ </div>
+ <!--abk_c_item_left 结束-->
+ <div class="abk_c_item_right fl">
+  <div class="abk_c_item_r_top">
+   <div class="abk_c_i_r_t_l fl">
+    <!--{foreach from=$ecs_all_ads.10 item=ad key=i}-->
+    <a href="{$ad.ad_link}">{$ad.ad_name}</a>
+    <!--{/foreach}-->
+   </div><!--此处的红酒品牌不超过8个，程序员注意，同上-->
+   <div class="abk_c_i_r_t_more fr">
+    <ul><a href="category.php?stype=is_hot">查看更多 >></a></ul>
+   </div>
+  </div>
+  <!--abk_c_item_r_top 结束-->
+  <div class="abk_c_item_pro_list">
+   <ul>
+
+    <!--{foreach from=$hot_goods item=goods}-->
+    <li>
+    <table width="231" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="170" valign="bottom">
+      <a href="goods.php?id={$goods.goods_id}"><div style="position:relative;"><img src="{$goods.goods_thumb}" width="160" height="160">
+      {if $goods.is_bk}<img src="images/p_bk.png" width="55" height="55" style="position:absolute; top:20px; right:10px;">{/if}
+     </div></a></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="goods.php?id={$goods.goods_id}" style="width:230px; line-height:30px; white-space: nowrap; text-overflow:ellipsis; overflow:hidden; display:block;">{$goods.goods_name}</a></td>
+  </tr>
+  <tr>
+    <td valign="bottom" height="25" align="left"><span>￥{$goods.shop_price}</span> &nbsp;<b>￥{$goods.market_price}</b></td>
+  </tr>
+</table>
+    </li>
+    <!--{/foreach}-->
+    
+   </ul>
+  </div>
+  <!--abk_c_item_pro_list 结束-->
+ </div>
+  <!--abk_c_item_right 结束-->
+</div>
+<!--热销产品 结束-->
+<div class="blank10"></div>
+<!--广告位04 开始-->
+<div style="background:url(data/afficheimg/{$ecs_all_ads.16.0.ad_code}) no-repeat center center; width:100%; height:300px;" onclick="location.href='{$ecs_all_ads.16.0.ad_link}'"></div>
+<!--广告位04 结束-->
+<div class="blank10"></div>
+<!--酒具 开始-->
+<div class="abk_content_item b_center">
+ <div class="abk_c_item_left fl">
+  <div class="abk_c_i_l_top">
+   <ul>酒具</ul>
+  </div>
+<div class="guanggao_five">
+ <div id="outer_five">
+    <ul id="inner_five">
+    <!--{foreach from=$ecs_all_ads.11 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><img src="data/afficheimg/{$ad.ad_code}" width="210" height="480"></a></li>
+    <!--{/foreach}-->
+    </ul>
+  </div>
+     <script type="text/javascript">
+    var outer_five=document.getElementById("outer_five");
+    var oInner_five=document.getElementById("inner_five");
+    var oLis_five=oInner_five.getElementsByTagName("li");
+    var oleft_five=document.getElementById("left_five");
+    var oright_five=document.getElementById("right_five");
+    var step_five=0;
+    var timer_five=null;
+    function buttur_five(ele,obj){
+      window.clearTimeout(ele.timer);
+      var end=null;
+      for(direc in obj){
+        var direc1=direc.toLowerCase();
+        var strOffset="offset"+direc1.substr(0,1).toUpperCase()+direc1.substring
+
+(1).toLowerCase();
+        var target=obj[direc];
+        var nSpeed=(target-ele[strOffset])/10;
+        nSpeed=nSpeed>=0?Math.ceil(nSpeed):Math.floor(nSpeed);
+        ele.style[direc1]=ele[strOffset]+nSpeed+"px";
+        end+=nSpeed;
+      }
+      if(end)
+        if(typeof fnCallback=="function"){
+          fnCallback.call(ele);
+        }else{
+            ele.timer=window.setTimeout(function(){buttur_five(ele,obj)},30);
+        }
+    }
+    var divs_five=document.createElement("div");
+    divs_five.setAttribute("id","nav_five");
+    for(var i=0; i<oLis_five.length;i++){
+        var oa_five=document.createElement("em_five");
+        oa_five.innerHTML=i+1;
+        divs_five.appendChild(oa_five);
+    }
+    outer_five.appendChild(divs_five);
+    var btn_five=document.getElementById("nav_five").getElementsByTagName("em_five");
+    for(var i=0; i<btn_five.length; i++){
+        btn_five[i].indx=i;
+        btn_five[0].className="ehover_five";
+        btn_five[i].onclick=function(){
+            //window.clearTimeout(timer);
+            for(var i=0; i<btn_five.length; i++){
+                btn_five[i].className="";
+                btn_five[this.indx].className="ehover_five";
+            }
+            buttur_five(oInner_five,{left:-oLis_five[0].offsetWidth*this.indx}); 
+        }    
+    }
+    function autoMove_five(){           
+      if(step_five<btn_five.length){
+             for(var i=0; i<btn_five.length; i++){
+                btn_five[i].className="";
+                btn_five[step_five].className="ehover_five";
+                buttur_five(oInner_five,{left:step_five*-210});
+            }           
+       }else{ 
+                step_five=btn_five.length-5;        
+         }
+      timer_five=window.setTimeout(autoMove_five,4000);
+    step_five++;
+    }
+    autoMove_five(); 
+    oleft_five.onclick=function(){
+      window.clearTimeout(timer_five);
+      step_five++;
+      if(step_five<btn_five.length){
+             for(var i=0; i<btn_five.length; i++){
+                btn_five[i].className="";
+                btn_five[step_five].className="ehover_five";
+                buttur_five(oInner_five,{left:step_five*-210});
+            }           
+         }else{ 
+                step_five=btn_five.length-5;        
+         }
+     }
+    oright_five.onclick=function(){
+      window.clearTimeout(timer_five);
+      step_five--;
+      if(step_five<0){
+             step_five=btn_five.length;
+         }else{ 
+            for(var i=0; i<btn_five.length; i++){
+                btn_five[i].className="";
+                btn_five[step_five].className="ehover_five";
+                buttur_five(oInner_five,{left:step_five*-210}); 
+            }
+         }
+    }
+     
+   oInner_five.onmouseover=function(){window.clearTimeout(timer_five);}
+
+   oInner_five.onmouseout=function(){timer_five=window.setTimeout(autoMove_five,4000);}
+
+   oleft_five.onmouseover=function(){window.clearTimeout(timer_five);}
+   oleft_five.onmouseout=function(){timer_five=window.setTimeout(autoMove_five,4000);}
+   oright_five.onmouseover=function(){window.clearTimeout(timer_five);}
+   oright_five.onmouseout=function(){timer_five=window.setTimeout(autoMove_five,4000);} 
+  </script>   
+</div>  
+  
+ </div>
+ <!--abk_c_item_left 结束-->
+ <div class="abk_c_item_right fl">
+  <div class="abk_c_item_r_top">
+   <div class="abk_c_i_r_t_l fl">
+    <!--{foreach from=$ecs_all_ads.12 item=ad key=i}-->
+    <a href="{$ad.ad_link}">{$ad.ad_name}</a>
+    <!--{/foreach}-->
+   </div><!--此处的红酒品牌不超过8个，程序员注意，同上-->
+   <div class="abk_c_i_r_t_more fr">
+    <ul><a href="category.php?id=18">查看更多 >></a></ul>
+   </div>
+  </div>
+  <!--abk_c_item_r_top 结束-->
+  <div class="abk_c_item_pro_list">
+   <ul>
+
+    <!--{foreach from=$other_goods item=goods}-->
+    <li>
+    <table width="231" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="170" valign="bottom">
+      <a href="goods.php?id={$goods.goods_id}"><div style="position:relative;"><img src="{$goods.goods_thumb}" width="160" height="160">
+      {if $goods.is_bk}<img src="images/p_bk.png" width="55" height="55" style="position:absolute; top:20px; right:10px;">{/if}
+     </div></a></td>
+  </tr>
+  <tr>
+    <td align="left"><a href="goods.php?id={$goods.goods_id}" style="width:230px; line-height:30px; white-space: nowrap; text-overflow:ellipsis; overflow:hidden; display:block;">{$goods.goods_name}</a></td>
+  </tr>
+  <tr>
+    <td valign="bottom" height="25" align="left"><span>￥{$goods.shop_price}</span> &nbsp;<b>￥{$goods.market_price}</b></td>
+  </tr>
+</table>
+    </li>
+    <!--{/foreach}-->
+    
+   </ul>
+  </div>
+  <!--abk_c_item_pro_list 结束-->
+ </div>
+  <!--abk_c_item_right 结束-->
+</div>
+<!--酒具 结束-->
+<div class="blank10"></div>
+<!--广告位05 开始-->
+<div style="background:url(data/afficheimg/{$ecs_all_ads.17.0.ad_code}) no-repeat center center; width:100%; height:100px;" onclick="location.href='{$ecs_all_ads.17.0.ad_link}'"></div>
+<!--广告位05 结束-->
+
+
+<!--保证区域 开始-->
+<div class="baozheng">
+<div class="blank40"></div>
+<div class="baozheng_list b_center">
+ <ul>
+
+    <!--{foreach from=$ecs_all_ads.24 item=ad key=i}-->
+    <li><a href="{$ad.ad_link}"><span style="background: url(data/afficheimg/{$ad.ad_code}) center top no-repeat"></span></a></li>
+  <li>
+   <table width="200" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><img src="data/afficheimg/{$ad.ad_code}" width="40" height="40"></td>
+  </tr>
+  <tr>
+    <td height="30"><strong>{$ad.ad_name}</strong></td>
+  </tr>
+  <tr>
+    <td>{$ad.ad_link}</td>
+  </tr>
+</table>
+  </li>
+    <!--{/foreach}-->
+
+ </ul>
+</div>
+<div class="blank40"></div>
+</div>
+<!--保证区域 结束-->
+
+
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>
